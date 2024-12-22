@@ -1,0 +1,4 @@
+[Unit]
+Description=Jellyfin's /config volume
+
+[Volume]

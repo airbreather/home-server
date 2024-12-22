@@ -18,3 +18,4 @@ loginctl enable-linger
 # handle each service now using its own install script
 $PWD/archipelago/install.zsh
 $PWD/certbot/install.zsh
+$PWD/jellyfin/install.zsh

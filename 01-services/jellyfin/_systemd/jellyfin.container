@@ -1,0 +1,14 @@
+[Unit]
+Description=Jellyfin media server
+
+[Container]
+Image=docker.io/jellyfin/jellyfin:10
+AutoUpdate=registry
+UserNS=auto
+PublishPort=8096:8096/tcp
+Volume=jellyfin-config.volume:/config:Z
+Volume=jellyfin-cache.volume:/cache:Z
+
+# FOR NOW use something easier
+# Volume=/nas/media:/media:ro
+Volume=%h/media:/media:ro

@@ -1,0 +1,14 @@
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Target = *
+
+[Action]
+Description = Making BTRFS snapshot of the root...
+Depends = btrfs-progs
+When = PreTransaction
+Exec = /usr/local/bin/snapshot-root.zsh
+AbortOnFail
+NeedsTargets

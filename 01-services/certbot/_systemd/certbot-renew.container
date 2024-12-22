@@ -1,0 +1,12 @@
+[Unit]
+Description=Renew certificates using certbot
+
+[Container]
+Image=docker.io/certbot/dns-cloudflare:latest
+ContainerName=certbot
+Volume=%h/letsencrypt:/etc/letsencrypt:Z
+Volume=certbot-var-log-letsencrypt.volume:/var/log/letsencrypt:Z
+Volume=certbot-var-lib-letsencrypt.volume:/var/lib/letsencrypt:Z
+AutoUpdate=registry
+Secret=cloudflare_credentials,mode=0600
+Exec=renew

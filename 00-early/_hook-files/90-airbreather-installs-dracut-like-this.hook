@@ -1,0 +1,15 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/modules/*/pkgbase
+Target = usr/lib/dracut/*
+Target = usr/lib/systemd/systemd
+Target = usr/lib/systemd/boot/efi/*.efi.stub
+Target = usr/src/*/dkms.conf
+
+[Action]
+Description = Updating linux images, the airbreather way...
+When = PostTransaction
+Exec = /usr/local/bin/airbreather-runs-dracut-like-this.zsh
+NeedsTargets

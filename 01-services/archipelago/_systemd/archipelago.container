@@ -1,0 +1,11 @@
+[Unit]
+Description=ArchipelagoMW web host
+
+[Container]
+Image=localhost/archipelago:0.5.1.Hotfix1
+ContainerName=archipelago
+Volume=%h/archipelago/custom_worlds:/opt/Archipelago/custom_worlds:Z,ro
+Volume=%h/archipelago/sni-v0.0.99-linux-amd64:/data/SNI:Z,ro
+Volume=%h/archipelago/Enemizer-7.1:/data/Enemizer:Z,ro
+AutoUpdate=registry
+PublishPort=8888:80

@@ -1,0 +1,5 @@
+[Unit]
+Description=Certbot's /var/log/letsencrypt volume
+
+[Volume]
+VolumeName=certbot-var-log-letsencrypt

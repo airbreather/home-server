@@ -1,5 +1,5 @@
 [Unit]
-Description=Renew all certificates using certbot
+Description=Install certificates for %i and all its subdomains using certbot
 
 [Container]
 Image=docker.io/certbot/dns-cloudflare:latest
@@ -9,7 +9,7 @@ Volume=certbot-var-log-letsencrypt.volume:/var/log/letsencrypt:Z
 Volume=certbot-var-lib-letsencrypt.volume:/var/lib/letsencrypt:Z
 AutoUpdate=registry
 Secret=cloudflare_credentials,mode=0600
-Exec=renew
+Exec=certonly --email 'airbreather@linux.com' --agree-tos --non-interactive --dns-cloudflare --dns-cloudflare-credentials /run/secrets/cloudflare_credentials --dns-cloudflare-propagation-seconds 30 -d %i -d *.%i
 
 [Service]
 Type=oneshot

@@ -1,10 +1,12 @@
 #!/usr/bin/zsh
 
-paru -S --asdeps crun fuse-overlayfs
-paru -S podman
+paru -S --needed podman crun
+paru -D --asdeps crun
 
 # get user prompting out of the way early
-(read -s 'CLOUDFLARE_TOKEN?Cloudflare API token: '; echo "dns_cloudflare_api_token=$CLOUDFLARE_TOKEN" | podman secret create --replace cloudflare_credentials -)
+if ! $(podman secret exists cloudflare_credentials); then
+    (read -s 'CLOUDFLARE_TOKEN?Cloudflare API token: '; echo "dns_cloudflare_api_token=$CLOUDFLARE_TOKEN" | podman secret create --replace cloudflare_credentials -)
+fi
 
 # common Podman-related stuff, not specific to any services
 cat >/tmp/10-unqualified-search-registries.conf <<<'unqualified-search-registries = ["docker.io"]'

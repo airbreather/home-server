@@ -2,11 +2,16 @@
 Description=Renew all certificates using certbot
 
 [Container]
-Image=docker.io/certbot/dns-cloudflare:latest
+# name it so that it conflicts with all other certbot management units.
+# only one instance of Certbot is allowed to run at a time.
 ContainerName=certbot
-Volume=%h/letsencrypt:/etc/letsencrypt:Z
-Volume=certbot-var-log-letsencrypt.volume:/var/log/letsencrypt:Z
+Pod=certbot.pod
+StartWithPod=false
+
+Image=docker.io/certbot/dns-cloudflare:latest
+Volume=certbot-etc-letsencrypt.volume:/etc/letsencrypt:Z
 Volume=certbot-var-lib-letsencrypt.volume:/var/lib/letsencrypt:Z
+Volume=certbot-var-log-letsencrypt.volume:/var/log/letsencrypt:Z
 AutoUpdate=registry
 Secret=cloudflare_credentials,mode=0600
 Exec=renew

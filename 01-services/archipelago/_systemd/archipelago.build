@@ -1,0 +1,4 @@
+[Build]
+ImageTag=localhost/archipelago:latest
+SetWorkingDirectory=unit
+PodmanArgs=--build-arg-file=argfile.conf

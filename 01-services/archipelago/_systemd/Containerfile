@@ -11,14 +11,14 @@ WORKDIR /opt/Archipelago
 RUN find . -name requirements.txt -exec python -m pip install -r '{}' ';'
 RUN python -m pip install --upgrade setuptools
 
-# create host.yaml
+# create host.yaml so we can edit it
 RUN python -c "import settings; settings.get_settings()"
 
 RUN mkdir -p /data/roms
 RUN mkdir -p /data/custom_worlds
 RUN mkdir -p /data/Enemizer
 RUN mkdir -p /data/SNI
-RUN perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "EnemizerCLI/EnemizerCLI.Core"$enemizer_path: "/data/Enemizer/EnemizerCLI.Core"$g; s$sni_path: "SNI"$sni_path: "/data/SNI"$g' host.yaml
+RUN perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "EnemizerCLI/EnemizerCLI.Core"$enemizer_path: "/data/externals/EnemizerCLI/EnemizerCLI.Core"$g; s$sni_path: "SNI"$sni_path: "/data/externals/SNI"$g' host.yaml
 
 EXPOSE 80/tcp
 

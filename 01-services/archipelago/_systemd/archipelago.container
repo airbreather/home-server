@@ -2,10 +2,12 @@
 Description=ArchipelagoMW web host
 
 [Container]
-Image=localhost/archipelago:0.5.1.Hotfix1
-ContainerName=archipelago
-Volume=%h/archipelago/custom_worlds:/opt/Archipelago/custom_worlds:Z,ro
-Volume=%h/archipelago/sni-v0.0.99-linux-amd64:/data/SNI:Z,ro
-Volume=%h/archipelago/Enemizer-7.1:/data/Enemizer:Z,ro
+Image=archipelago.build
+Volume=%h/Archipelago/externals:/data/externals:ro
+Volume=%h/Archipelago/roms:/data/roms:ro
+Volume=%h/Archipelago/worlds:/opt/Archipelago/custom_worlds:ro
 AutoUpdate=registry
 PublishPort=8888:80
+UserNS=auto
+# SIGTERM doesn't do the trick.
+StopSignal=SIGKILL

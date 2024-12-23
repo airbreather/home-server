@@ -5,7 +5,7 @@ Description=Renew all certificates using certbot
 # name it so that it conflicts with all other certbot management units.
 # only one instance of Certbot is allowed to run at a time.
 ContainerName=certbot
-Pod=certbot.pod
+Pod=web.pod
 StartWithPod=false
 
 Image=docker.io/certbot/dns-cloudflare:latest

@@ -3,8 +3,6 @@
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 mkdir -p $HOME/.config/containers/systemd
-cp -r $SCRIPT_DIR/_systemd $HOME/.config/containers/systemd/jellyfin
-
-mkdir -p $HOME/media
+cp -r $SCRIPT_DIR/_systemd $HOME/.config/containers/systemd/forgejo
 
 systemctl --user daemon-reload

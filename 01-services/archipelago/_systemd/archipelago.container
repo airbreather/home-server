@@ -11,3 +11,7 @@ PublishPort=8888:80
 UserNS=auto
 # SIGTERM doesn't do the trick.
 StopSignal=SIGKILL
+
+[Service]
+Restart=always
+RestartSec=5s

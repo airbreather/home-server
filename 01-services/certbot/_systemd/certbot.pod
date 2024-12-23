@@ -1,5 +1,5 @@
 [Unit]
-Description=Certbot and anything that needs its certs
+Description=Certbot containers that need to run as the same user
 
 [Pod]
 UserNS=auto

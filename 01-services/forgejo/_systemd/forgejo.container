@@ -1,0 +1,14 @@
+[Unit]
+Description=Forgejo software forge
+
+[Container]
+Image=codeberg.org/forgejo/forgejo:9
+AutoUpdate=registry
+Pod=web.pod
+Environment=TZ=America/Detroit
+Volume=forgejo-data.volume:/data:Z
+Volume=forgejo-var-lib-gitea.volume:/var/lib/gitea:Z
+
+[Service]
+Restart=always
+RestartSec=5s

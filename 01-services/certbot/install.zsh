@@ -14,3 +14,5 @@ echo "Starting certbot installs. They have a built-in 30-second minimum wait, so
 systemctl --user start certbot-install@startcodon.com.service --wait
 echo "Finished startcodon.com. Now for airbreather.party..."
 systemctl --user start certbot-install@airbreather.party.service --wait
+
+systemctl --user daemon-reload

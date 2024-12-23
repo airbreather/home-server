@@ -1,0 +1,8 @@
+[Unit]
+Description=All web services that nginx reverse-proxies to
+
+[Pod]
+UserNS=auto
+PublishPort=3000:3000
+PublishPort=8096:8096
+PublishPort=5432:5432

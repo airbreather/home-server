@@ -1,10 +1,10 @@
 #!/usr/bin/zsh
 
 if ! $(podman secret exists forgejo_host); then
-    (read -s 'FORGEJO_HOST?Forgejo host: '; echo $FORGEJO_HOST | podman secret create forgejo_host -)
+    (read -s 'FORGEJO_HOST?Forgejo host: '; echo -n $FORGEJO_HOST | podman secret create forgejo_host -)
 fi
 if ! $(podman secret exists jellyfin_host); then
-    (read -s 'JELLYFIN_HOST?Jellyfin host: '; echo $JELLYFIN_HOST | podman secret create jellyfin_host -)
+    (read -s 'JELLYFIN_HOST?Jellyfin host: '; echo -n $JELLYFIN_HOST | podman secret create jellyfin_host -)
 fi
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"

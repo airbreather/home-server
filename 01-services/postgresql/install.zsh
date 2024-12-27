@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 if ! $(podman secret exists postgresql_password); then
-    (read -s 'POSTGRESQL_PASSWORD?PostgreSQL password: '; echo $POSTGRESQL_PASSWORD | podman secret create postgresql_password -)
+    (read -s 'POSTGRESQL_PASSWORD?PostgreSQL password: '; echo -n $POSTGRESQL_PASSWORD | podman secret create postgresql_password -)
 fi
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"

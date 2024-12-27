@@ -1,5 +1,0 @@
-[Unit]
-Description=Certbot containers that need to run as the same user
-
-[Pod]
-UserNS=auto

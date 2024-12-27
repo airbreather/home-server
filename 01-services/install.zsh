@@ -3,6 +3,7 @@
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 if false; then
+    systemctl --user is-active web-pod && systemctl --user stop web-pod
     podman image rm -f localhost/archipelago:latest
     podman image rm -f localhost/yarp:latest
     podman volume rm -f systemd-certbot-etc-letsencrypt

@@ -6,5 +6,3 @@ mkdir -p $HOME/.config/containers/systemd
 cp -r $SCRIPT_DIR/_systemd $HOME/.config/containers/systemd/jellyfin
 
 mkdir -p $HOME/media
-
-systemctl --user daemon-reload

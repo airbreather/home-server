@@ -20,6 +20,7 @@ RUN mkdir -p /data/Enemizer
 RUN mkdir -p /data/SNI
 RUN perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "EnemizerCLI/EnemizerCLI.Core"$enemizer_path: "/data/externals/EnemizerCLI/EnemizerCLI.Core"$g; s$sni_path: "SNI"$sni_path: "/data/externals/SNI"$g' host.yaml
 
-EXPOSE 80/tcp
+ARG webhost_port
+EXPOSE $webhost_port/tcp
 
 CMD python WebHost.py

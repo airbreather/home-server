@@ -9,15 +9,12 @@ mkdir -p $HOME/Archipelago
 pushd $HOME/Archipelago
 
 # mapped to custom_worlds
-rm -rf worlds
 mkdir worlds
 
 # all 'rom_file' and 'something_rom_file' in host.yaml look here for it:
-rm -rf roms
 mkdir roms
 
 # some external tools that certain Archipelago worlds specifically use:
-rm -rf externals
 mkdir externals
 pushd externals
 
@@ -40,5 +37,3 @@ popd
 chmod -R o+r worlds roms externals
 
 popd
-
-systemctl --user daemon-reload

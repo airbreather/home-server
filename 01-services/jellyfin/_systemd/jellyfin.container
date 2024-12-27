@@ -9,8 +9,8 @@ Volume=jellyfin-config.volume:/config:Z
 Volume=jellyfin-cache.volume:/cache:Z
 
 # FOR NOW use something easier
-# Volume=/nas/media:/media:ro
-Volume=%h/media:/media:ro
+# Volume=/nas/media:/media:ro,Z
+Volume=%h/media:/media:ro,Z
 
 [Service]
 Restart=on-failure

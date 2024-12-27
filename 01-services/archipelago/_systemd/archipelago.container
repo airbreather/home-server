@@ -3,12 +3,12 @@ Description=ArchipelagoMW web host
 
 [Container]
 Image=archipelago.build
-Volume=%h/Archipelago/externals:/data/externals:ro
-Volume=%h/Archipelago/roms:/data/roms:ro
-Volume=%h/Archipelago/worlds:/opt/Archipelago/custom_worlds:ro
 AutoUpdate=registry
-PublishPort=8888:80
+Pod=web.pod
 UserNS=auto
+Volume=%h/Archipelago/externals:/data/externals:ro,Z
+Volume=%h/Archipelago/roms:/data/roms:ro,Z
+Volume=%h/Archipelago/worlds:/opt/Archipelago/custom_worlds:ro,Z
 # SIGTERM doesn't do the trick.
 StopSignal=SIGKILL
 

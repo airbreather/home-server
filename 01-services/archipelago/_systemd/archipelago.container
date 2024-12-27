@@ -13,5 +13,5 @@ UserNS=auto
 StopSignal=SIGKILL
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5s

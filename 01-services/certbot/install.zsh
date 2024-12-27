@@ -7,12 +7,11 @@ fi
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 mkdir -p $HOME/.config/containers/systemd
 cp -r $SCRIPT_DIR/_systemd $HOME/.config/containers/systemd/certbot
-podman pull docker.io/certbot/dns-cloudflare:latest
-
 systemctl --user daemon-reload
+
 echo "Starting certbot installs. They have a built-in 30-second minimum wait, so be patient. First up is startcodon.com..."
 systemctl --user start certbot-install@startcodon.com.service --wait
 echo "Finished startcodon.com. Now for airbreather.party..."
 systemctl --user start certbot-install@airbreather.party.service --wait
-
-systemctl --user daemon-reload
+echo "Finished airbreather.party. Now for airbreather.dev..."
+systemctl --user start certbot-install@airbreather.dev.service --wait

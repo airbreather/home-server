@@ -12,5 +12,5 @@ Volume=postgresql-export.volume:/export:Z
 Volume=postgresql-socket.volume:/var/run/postgresql:Z
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5s

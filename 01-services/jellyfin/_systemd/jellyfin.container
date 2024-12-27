@@ -13,5 +13,5 @@ Volume=jellyfin-cache.volume:/cache:Z
 Volume=%h/media:/media:ro
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5s

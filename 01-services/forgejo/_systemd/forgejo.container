@@ -10,5 +10,5 @@ Volume=forgejo-data.volume:/data:Z
 Volume=forgejo-var-lib-gitea.volume:/var/lib/gitea:Z
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5s

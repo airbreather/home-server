@@ -1,0 +1,4 @@
+[Build]
+ImageTag=localhost/yarp:latest
+SetWorkingDirectory=unit
+Volume=./ReverseProxy:/source

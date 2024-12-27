@@ -1,0 +1,15 @@
+[Unit]
+Description=My YARP-based reverse proxy
+
+[Container]
+Image=yarp.build
+AutoUpdate=registry
+Pod=web.pod
+Secret=forgejo_host,type=env,target=ReverseProxy__Routes__forgejo__Match__Hosts__0
+Secret=jellyfin_host,type=env,target=ReverseProxy__Routes__jellyfin__Match__Hosts__0
+Volume=certbot-etc-letsencrypt.volume:/etc/letsencrypt:Z
+UserNS=auto
+
+[Service]
+Restart=on-failure
+RestartSec=5s

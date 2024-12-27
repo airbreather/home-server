@@ -1,8 +1,6 @@
 [Unit]
-Description=All web services that nginx reverse-proxies to
+Description=TLS reverse-proxy and its targets
 
 [Pod]
 UserNS=auto
-PublishPort=3000:3000
-PublishPort=8096:8096
-PublishPort=5432:5432
+PublishPort=443:443

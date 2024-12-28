@@ -31,7 +31,7 @@ mkdir $HOME/setup
 pushd $HOME/setup
 git clone https://github.com/airbreather/home-server.git .
 sudo cp 00-early/_hook-files/*.hook /etc/pacman.d/hooks/
-sudo cp 00-early/_hook-files/*.sh /usr/local/bin/
+sudo cp 00-early/_hook-files/*.zsh /usr/local/bin/
 sudo cp 00-early/_sysctl.d-files/*.conf /etc/sysctl.d/
 popd
 mkdir -p $HOME/src/paru-bin

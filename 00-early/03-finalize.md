@@ -32,6 +32,7 @@ pushd $HOME/setup
 git clone https://github.com/airbreather/home-server.git .
 sudo cp 00-early/_hook-files/*.hook /etc/pacman.d/hooks/
 sudo cp 00-early/_hook-files/*.sh /usr/local/bin/
+sudo cp 00-early/_sysctl.d-files/*.conf /etc/sysctl.d/
 popd
 mkdir -p $HOME/src/paru-bin
 pushd $HOME/src/paru-bin
@@ -41,8 +42,6 @@ popd
 sudo perl -pi -e 's/#(?=SudoLoop)//' /etc/paru.conf
 paru -S zfs-dkms
 sudo mkdir -p /etc/zfs/zfs-list.cache
-sudo systemctl enable --now zfs.target zfs-import.target zfs-import-cache.service zfs-mount.service zfs-zed.service
-sudo touch /etc/zfs/zfs-list.cache/nas
 sudo mkdir /.snapshots/backup-efi
 sudo mkdir /.snapshots/root-auto
 sudo useradd -G users -U -m kristina

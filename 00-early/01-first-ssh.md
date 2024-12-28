@@ -26,7 +26,7 @@ mount --mkdir -o subvol=@var_pacman_pkg ${device}2 /mnt/var/pacman/pkg
 while systemctl show reflector | grep -q ActiveState=activating; do echo Waiting for Reflector to finish...; sleep 1s; done
 echo Reflector finished
 perl -pi -e 's/^#(?=(?:Color)|(?:ParallelDownloads = \d+)$)//' /etc/pacman.conf
-pacstrap -PK /mnt base linux-lts dracut base-devel linux-lts-headers linux-firmware amd-ucode btrfs-progs emacs-nox git man-db man-pages texinfo openssh pacman-contrib dkms zsh devtools
+pacstrap -PK /mnt base linux-lts dracut base-devel linux-lts-headers linux-firmware amd-ucode btrfs-progs emacs-nox git man-db man-pages texinfo openssh pacman-contrib dkms zsh devtools samba
 genfstab -L /mnt >> /mnt/etc/fstab
 ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 cut -f 2 -d: /etc/shadow | head -n1 > /mnt/etc/.root-password

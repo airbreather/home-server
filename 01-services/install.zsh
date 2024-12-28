@@ -23,7 +23,7 @@ cat >/tmp/10-unqualified-search-registries.conf <<<'unqualified-search-registrie
 chmod 0644 /tmp/10-unqualified-search-registries.conf
 sudo mv /tmp/10-unqualified-search-registries.conf /etc/containers/registries.conf.d/
 loginctl enable-linger
-sudo sysctl net.ipv4.ip_unprivileged_port_start=443
+systemctl --user enable podman-auto-update.timer
 
 # get user prompting out of the way early
 if ! $(podman secret exists cloudflare_credentials); then
@@ -45,6 +45,9 @@ fi
 mkdir -p $HOME/.config/containers/systemd
 cp $SCRIPT_DIR/web.pod $HOME/.config/containers/systemd/
 
+# handle old data. don't worry, this doesn't remap the UID/GID values in the zpool just yet.
+$SCRIPT_DIR/handle-old-data.zsh
+
 # handle each service now using its own install script. Certbot goes first so we can daemon-reload
 # and set up the /etc/letsencrypt volume before any of the other containers (especially those that
 # depend on it) get started.
@@ -62,9 +65,11 @@ $SCRIPT_DIR/archipelago/install.zsh
 $SCRIPT_DIR/forgejo/install.zsh
 $SCRIPT_DIR/jellyfin/install.zsh
 $SCRIPT_DIR/postgresql/install.zsh
+$SCRIPT_DIR/samba/install.zsh
 $SCRIPT_DIR/yarp/install.zsh
 
 systemctl --user daemon-reload
-systemctl --user start web-pod.service
+systemctl --user enable --now web-pod.service
+sudo systemctl enable --now smb.service
 
 echo "Done."

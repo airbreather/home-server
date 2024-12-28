@@ -1,0 +1,27 @@
+[Unit]
+Description=Foundry VTT (first instance)
+
+[Container]
+Image=docker.io/felddy/foundryvtt:12
+AutoUpdate=registry
+Pod=web.pod
+Secret=foundryvtt1_adminpassword,type=env,target=FOUNDRY_ADMIN_KEY
+Secret=foundryvtt_timedurl,type=env,target=FOUNDRY_RELEASE_URL
+Environment=CONTAINER_PATCHES=/data/container-patches
+Environment=CONTAINER_PRESERVE_OWNER=/data/container-patches
+Environment=FOUNDRY_PROXY_SSL=true
+Environment=FOUNDRY_IP_DISCOVERY=false
+Environment=FOUNDRY_HOSTNAME=airbreather.dev
+Environment=FOUNDRY_ROUTE_PREFIX=foundryvtt
+Environment=FOUNDRY_PORT=30000
+Environment=FOUNDRY_PROXY_PORT=443
+Environment=FOUNDRY_PROXY_SSL=true
+Environment=TZ=America/Detroit
+Volume=foundryvtt1-data.volume:/data:Z
+# Volume=/nas/shared/foundry-assets:/data/Data/assets:ro,Z
+Volume=./container-patches:/data/container-patches:ro,Z
+Exec=resources/app/main.mjs --port=30000 --headless --noupdate --dataPath=/data
+
+[Service]
+Restart=on-failure
+RestartSec=5s

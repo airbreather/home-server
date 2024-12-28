@@ -7,7 +7,7 @@ if false; then
     podman image rm -f localhost/archipelago:latest
     podman image rm -f localhost/yarp:latest
     podman volume rm -f systemd-certbot-etc-letsencrypt
-    for secret_name in "cloudflare_credentials" "postgresql_password" "archipelago_host" "forgejo_host" "jellyfin_host"; do
+    for secret_name in "cloudflare_credentials" "postgresql_password" "archipelago_host" "forgejo_host" "jellyfin_host" "foundryvtt1_adminpassword" "foundryvtt2_adminpassword"; do
         podman secret rm -i $secret_name
     done
     rm -rf $HOME/.config/containers/systemd
@@ -41,6 +41,12 @@ fi
 if ! $(podman secret exists jellyfin_host); then
     (read -s 'JELLYFIN_HOST?Jellyfin host: '; echo -n $JELLYFIN_HOST | podman secret create jellyfin_host -)
 fi
+if ! $(podman secret exists foundryvtt1_adminpassword); then
+    (read -s 'FOUNDRYVTT1_ADMINPASSWORD?Foundry VTT 1 admin password: '; echo -n $FOUNDRYVTT1_ADMINPASSWORD | podman secret create foundryvtt1_adminpassword -)
+fi
+if ! $(podman secret exists foundryvtt2_adminpassword); then
+    (read -s 'FOUNDRYVTT2_ADMINPASSWORD?Foundry VTT 2 admin password: '; echo -n $FOUNDRYVTT2_ADMINPASSWORD | podman secret create foundryvtt2_adminpassword -)
+fi
 
 mkdir -p $HOME/.config/containers/systemd
 cp $SCRIPT_DIR/web.pod $HOME/.config/containers/systemd/
@@ -63,13 +69,21 @@ echo "Finished airbreather.dev. Moving onto install other services."
 
 $SCRIPT_DIR/archipelago/install.zsh
 $SCRIPT_DIR/forgejo/install.zsh
+$SCRIPT_DIR/foundryvtt/install.zsh
 $SCRIPT_DIR/jellyfin/install.zsh
 $SCRIPT_DIR/postgresql/install.zsh
 $SCRIPT_DIR/samba/install.zsh
 $SCRIPT_DIR/yarp/install.zsh
 
+# this HAD to wait, and it's unconditional: by definition, it expires after a few minutes. in fact,
+# let's not even ask the user to give us a timed URL until we've made sure to pull the image layers.
+# if ! $(podman secret exists foundryvtt_timedurl); then
+    podman pull felddy/foundryvtt:12
+    (read -s 'FOUNDRYVTT_TIMEDURL?Foundry VTT timed URL: '; echo -n $FOUNDRYVTT_TIMEDURL | podman secret create --replace foundryvtt_timedurl -)
+# fi
+
 systemctl --user daemon-reload
-systemctl --user enable --now web-pod.service
+systemctl --user start web-pod.service
 sudo systemctl enable --now smb.service
 
 echo "Done."

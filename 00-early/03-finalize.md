@@ -46,3 +46,5 @@ sudo mkdir /.snapshots/backup-efi
 sudo mkdir /.snapshots/root-auto
 sudo useradd -G users -U -m kristina
 ```
+
+Reboot one more time, then go to 01-services/install.zsh (it runs all others, including handle-old-data).

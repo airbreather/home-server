@@ -50,4 +50,3 @@ echo
 echo 'A script has been created at /home/joe/remap_ids.sh that will remap the IDs in the zpool.'
 echo 'This is a DESTRUCTIVE operation, so I am taking full precautions not to run it automatically.'
 echo 'Examine it before running it (which must be done as root). Good luck.'
-```

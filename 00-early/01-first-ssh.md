@@ -9,7 +9,7 @@ vared -p 'Root device: ' -r "[$device]" device
 echo 'g\nn\n\n\n+1G\nt\n1\nn\n\n\n\nw' | fdisk $device
 sync
 mkfs.fat -F 32 -n ESP ${device}1
-mkfs.btrfs -L MAIN ${device}2
+mkfs.btrfs -f -L MAIN ${device}2
 mount ${device}2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home

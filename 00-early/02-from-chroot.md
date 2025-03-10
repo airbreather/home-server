@@ -35,7 +35,7 @@ usermod -p `cat /etc/.root-password` root
 useradd -m -G wheel,users -U -s /usr/bin/zsh -p `cat /etc/.root-password` joe
 rm /etc/.root-password
 cat >/etc/sudoers.d/00_wheel <<<'%wheel ALL=(ALL:ALL) ALL'
-perl -pi -e 's/(?<=-march=x86-64) /-v4 / ; s/(?<=-mtune=)generic/native/ ; s/^#(RUSTFLAGS="[^"]*)"/$1 -C target-cpu=x86-64-v4"/ ; s/^#(?<prefix>MAKEFLAGS="-j)(\d+)(?<postfix>.*)$/$+{prefix}10$+{postfix}/' /etc/makepkg.conf
+perl -pi -e 's/(?<=-march=x86-64) /-v3 / ; s/(?<=-mtune=)generic/native/ ; s/^#(RUSTFLAGS="[^"]*)"/$1 -C target-cpu=x86-64-v3"/ ; s/^#(?<prefix>MAKEFLAGS="-j)(\d+)(?<postfix>.*)$/$+{prefix}10$+{postfix}/' /etc/makepkg.conf
 systemctl enable sshd.service paccache.timer
 mkdir -m 0700 /home/joe/.ssh
 cat >/home/joe/.ssh/authorized_keys <<<'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCWGHWSbfrMaedEPJUZKoHKHKcowy2oKW2PIK8MUJ7P'

@@ -22,5 +22,6 @@ RUN perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "Enemi
 
 ARG webhost_port
 EXPOSE $webhost_port/tcp
+RUN sed "s/#PORT: 80/PORT: $webhost_port/" "/opt/Archipelago/docs/webhost configuration sample.yaml" > "/opt/Archipelago/config.yaml"
 
 CMD python WebHost.py

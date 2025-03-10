@@ -24,6 +24,7 @@ mount --mkdir -o subvol=@snapshots ${device}2 /mnt/.snapshots
 mount --mkdir -o subvol=@var_log,compress=zstd ${device}2 /mnt/var/log
 mount --mkdir -o subvol=@var_pacman_pkg ${device}2 /mnt/var/pacman/pkg
 while systemctl show reflector | grep -q ActiveState=activating; do echo Waiting for Reflector to finish...; sleep 1s; done
+sleep 2s
 echo Reflector finished
 perl -pi -e 's/^#(?=(?:Color)|(?:ParallelDownloads = \d+)$)//' /etc/pacman.conf
 pacstrap -PK /mnt base linux-lts dracut base-devel linux-lts-headers linux-firmware amd-ucode btrfs-progs polkit unzip emacs-nox git man-db man-pages texinfo openssh pacman-contrib dkms zsh devtools samba

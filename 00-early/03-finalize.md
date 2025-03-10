@@ -47,4 +47,4 @@ sudo mkdir /.snapshots/root-auto
 sudo useradd -G users -U -m kristina
 ```
 
-Reboot one more time, then go to 01-services/install.zsh (it runs all others, including handle-old-data).
+Reboot one more time (or `sudo sysctl net.ipv4.ip_unprivileged_port_start=0` if you are impatient and I haven't updated any other sysctl.d things), then go to 01-services/install.zsh (it runs all others, including handle-old-data).

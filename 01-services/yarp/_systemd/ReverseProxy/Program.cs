@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpLogging;
 using Yarp.ReverseProxy.Transforms;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -22,8 +23,21 @@ builder.Services
         }
     });
 
+builder.Services
+    .AddW3CLogging(logging =>
+    {
+        logging.LoggingFields = W3CLoggingFields.All;
+        logging.LogDirectory = "/app/yarp-logs";
+    });
+
 WebApplication app = builder.Build();
 
+app.UseW3CLogging();
+
+app.MapGet("/robots.txt", () => """
+    User-agent: *
+    Disallow: /
+    """);
 app.MapReverseProxy();
 
 app.Run();

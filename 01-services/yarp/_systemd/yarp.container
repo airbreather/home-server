@@ -9,6 +9,7 @@ Secret=archipelago_host,type=env,target=ReverseProxy__Routes__archipelago__Match
 Secret=forgejo_host,type=env,target=ReverseProxy__Routes__forgejo__Match__Hosts__0
 Secret=jellyfin_host,type=env,target=ReverseProxy__Routes__jellyfin__Match__Hosts__0
 Volume=certbot-etc-letsencrypt.volume:/etc/letsencrypt:ro,Z
+Volume=/home/joe/yarp-logs:/app/yarp-logs
 UserNS=auto
 
 [Service]

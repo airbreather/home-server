@@ -3,25 +3,20 @@
 ARG python_version
 FROM python:$python_version
 
-# 0.5.1.Hotfix1 tested
+# 0.6.1 tested
 ARG archipelago_tag
 RUN git clone --depth 1 --branch $archipelago_tag https://github.com/ArchipelagoMW/Archipelago.git /opt/Archipelago
 
+ARG webhost_port
+
 WORKDIR /opt/Archipelago
-RUN find . -name requirements.txt -exec python -m pip install -r '{}' ';'
-RUN python -m pip install --upgrade setuptools
+RUN find . -name requirements.txt -exec python -m pip install -r '{}' ';' && \
+    python -m pip install --upgrade setuptools
 
 # create host.yaml so we can edit it
-RUN python -c "import settings; settings.get_settings()"
+RUN python -c "import settings; settings.get_settings()" && \
+    perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "EnemizerCLI/EnemizerCLI.Core"$enemizer_path: "/data/externals/EnemizerCLI/EnemizerCLI.Core"$g; s$sni_path: "SNI"$sni_path: "/data/externals/SNI"$g' host.yaml && \
+    python -c "import yaml; print(yaml.dump({ 'PORT': $webhost_port, 'PONY': { 'provider': 'sqlite', 'filename': '/data/db/ap.db3', 'create_db': True } }))" > "/opt/Archipelago/config.yaml"
 
-RUN mkdir -p /data/roms
-RUN mkdir -p /data/custom_worlds
-RUN mkdir -p /data/Enemizer
-RUN mkdir -p /data/SNI
-RUN perl -pi -e 's$rom_file: "$rom_file: "/data/roms/$g; s$enemizer_path: "EnemizerCLI/EnemizerCLI.Core"$enemizer_path: "/data/externals/EnemizerCLI/EnemizerCLI.Core"$g; s$sni_path: "SNI"$sni_path: "/data/externals/SNI"$g' host.yaml
-
-ARG webhost_port
 EXPOSE $webhost_port/tcp
-RUN sed "s/#PORT: 80/PORT: $webhost_port/" "/opt/Archipelago/docs/webhost configuration sample.yaml" > "/opt/Archipelago/config.yaml"
-
 CMD python WebHost.py

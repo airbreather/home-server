@@ -8,6 +8,9 @@ cp -r $SCRIPT_DIR/_systemd $HOME/.config/containers/systemd/archipelago
 mkdir -p $HOME/Archipelago
 pushd $HOME/Archipelago
 
+mkdir db
+mkdir logs
+
 # mapped to custom_worlds
 mkdir worlds
 
@@ -35,5 +38,7 @@ popd
 
 # Probably the easiest way to ensure that the mapped users have what they need.
 chmod -R o+r worlds roms externals
+chmod -R go+rw db
+chmod -R go+rw logs
 
 popd

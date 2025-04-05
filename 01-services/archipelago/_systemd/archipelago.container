@@ -6,8 +6,10 @@ Image=archipelago.build
 AutoUpdate=registry
 Pod=web.pod
 UserNS=auto
+Volume=%h/Archipelago/db:/data/db:Z
 Volume=%h/Archipelago/externals:/data/externals:ro,Z
 Volume=%h/Archipelago/roms:/data/roms:ro,Z
+Volume=%h/Archipelago/logs:/opt/Archipelago/logs:Z
 Volume=%h/Archipelago/worlds:/opt/Archipelago/custom_worlds:ro,Z
 # SIGTERM doesn't do the trick.
 StopSignal=SIGKILL

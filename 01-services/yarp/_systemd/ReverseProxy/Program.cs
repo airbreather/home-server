@@ -1,7 +1,30 @@
-using Microsoft.AspNetCore.HttpLogging;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 using Yarp.ReverseProxy.Transforms;
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.Async(a => a
+        .File(
+            new CompactJsonFormatter(),
+            "/app/yarp-logs/serilog.jsonl",
+            rollingInterval: RollingInterval.Day,
+            rollOnFileSizeLimit: true,
+            fileSizeLimitBytes: 100 * (1 << 20), // 100 MiB
+            retainedFileCountLimit: 100),
+        bufferSize: 100000,
+        blockWhenFull: true
+    )
+    .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+    .CreateLogger();
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddSerilog();
 
 builder.Services
     .AddReverseProxy()
@@ -23,16 +46,9 @@ builder.Services
         }
     });
 
-builder.Services
-    .AddW3CLogging(logging =>
-    {
-        logging.LoggingFields = W3CLoggingFields.All;
-        logging.LogDirectory = "/app/yarp-logs";
-    });
-
 WebApplication app = builder.Build();
 
-app.UseW3CLogging();
+app.UseSerilogRequestLogging();
 
 app.MapGet("/robots.txt", () => """
     User-agent: *
@@ -40,4 +56,11 @@ app.MapGet("/robots.txt", () => """
     """);
 app.MapReverseProxy();
 
-app.Run();
+try
+{
+    await app.RunAsync();
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}

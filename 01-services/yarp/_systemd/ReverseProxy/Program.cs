@@ -1,11 +1,13 @@
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
+using Serilog.Sinks.SystemConsole.Themes;
 using Yarp.ReverseProxy.Transforms;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(
         outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj} | {Properties:j}{NewLine}{Exception}",
+        theme: AnsiConsoleTheme.Literate,
         applyThemeToRedirectedOutput: true)
     .WriteTo.Async(a => a
         .File(

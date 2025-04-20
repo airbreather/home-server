@@ -1,14 +1,18 @@
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
-using Serilog.Sinks.SystemConsole.Themes;
+using Serilog.Templates;
+using Serilog.Templates.Themes;
 using Yarp.ReverseProxy.Transforms;
 
 Log.Logger = new LoggerConfiguration()
+    .Filter.ByExcluding("RequestPath = '/api/actions/runner.v1.RunnerService/FetchTask'")
     .WriteTo.Console(
-        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj} | {Properties:j}{NewLine}{Exception}",
-        theme: AnsiConsoleTheme.Literate,
-        applyThemeToRedirectedOutput: true)
+        formatter: new ExpressionTemplate(
+            "[{@t:HH:mm:ss} {@l:u3} {SourceContext}] {@m}{#if rest(true) <> {}} | {rest(true)}{#end}\n{Exception}",
+            theme: TemplateTheme.Literate,
+            applyThemeWhenOutputIsRedirected: true
+        ))
     .WriteTo.Async(a => a
         .File(
             formatter: new CompactJsonFormatter(),

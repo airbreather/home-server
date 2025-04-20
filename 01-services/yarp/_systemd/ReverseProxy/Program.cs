@@ -4,7 +4,7 @@ using Serilog.Formatting.Compact;
 using Yarp.ReverseProxy.Transforms;
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}    {Properties:j}{NewLine}{Exception}")
     .WriteTo.Async(a => a
         .File(
             new CompactJsonFormatter(),
@@ -48,7 +48,16 @@ builder.Services
 
 WebApplication app = builder.Build();
 
-app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging(options =>
+{
+    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+    {
+        if (httpContext.Connection.RemoteIpAddress is { } remoteIpAddress)
+        {
+            diagnosticContext.Set("RequestIP", remoteIpAddress);
+        }
+    };
+});
 
 app.MapGet("/robots.txt", () => """
     User-agent: *

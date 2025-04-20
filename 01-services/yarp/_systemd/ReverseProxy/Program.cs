@@ -4,11 +4,13 @@ using Serilog.Formatting.Compact;
 using Yarp.ReverseProxy.Transforms;
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}    {Properties:j}{NewLine}{Exception}")
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj} | {Properties:j}{NewLine}{Exception}",
+        applyThemeToRedirectedOutput: true)
     .WriteTo.Async(a => a
         .File(
-            new CompactJsonFormatter(),
-            "/app/yarp-logs/serilog.jsonl",
+            formatter: new CompactJsonFormatter(),
+            path: "/app/yarp-logs/serilog.jsonl",
             rollingInterval: RollingInterval.Day,
             rollOnFileSizeLimit: true,
             fileSizeLimitBytes: 100 * (1 << 20), // 100 MiB
@@ -19,6 +21,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+    .MinimumLevel.Override("Yarp.ReverseProxy.Forwarder.HttpForwarder", LogEventLevel.Warning)
     .CreateLogger();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

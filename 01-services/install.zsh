@@ -79,6 +79,7 @@ $SCRIPT_DIR/foundryvtt/install.zsh
 $SCRIPT_DIR/jellyfin/install.zsh
 $SCRIPT_DIR/postgresql/install.zsh
 $SCRIPT_DIR/samba/install.zsh
+$SCRIPT_DIR/static-files/install.zsh
 $SCRIPT_DIR/yarp/install.zsh
 
 systemctl --user daemon-reload

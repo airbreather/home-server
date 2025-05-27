@@ -61,6 +61,7 @@ app.UseSerilogRequestLogging(options =>
 {
     options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
     {
+        diagnosticContext.Set("RequestHost", httpContext.Request.Host);
         if (httpContext.Connection.RemoteIpAddress is { } remoteIpAddress)
         {
             diagnosticContext.Set("RequestIP", remoteIpAddress);

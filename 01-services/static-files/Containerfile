@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine
+COPY StaticFiles /app
+WORKDIR /app
+EXPOSE 6969/tcp
+ENTRYPOINT ["dotnet", "run", "-c", "Release", "--", "--urls=http://*:6969"]

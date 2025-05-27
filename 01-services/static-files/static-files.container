@@ -1,0 +1,14 @@
+[Unit]
+Description=Static subdomains
+
+[Container]
+Image=static-files.build
+AutoUpdate=registry
+Pod=web.pod
+UserNS=auto
+Volume=/path/to/example1:/app/wwwroot/example1:ro
+Volume=/path/to/example2:/app/wwwroot/example2:ro
+
+[Service]
+Restart=on-failure
+RestartSec=5s

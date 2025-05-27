@@ -5,8 +5,10 @@ Description=Foundry VTT (first instance)
 Image=docker.io/felddy/foundryvtt:12
 AutoUpdate=registry
 Pod=web.pod
+UserNS=auto
 Secret=foundryvtt1_adminpassword,type=env,target=FOUNDRY_ADMIN_KEY
-Secret=foundryvtt_timedurl,type=env,target=FOUNDRY_RELEASE_URL
+Secret=foundryvtt_username,type=env,target=FOUNDRY_USERNAME
+Secret=foundryvtt_password,type=env,target=FOUNDRY_PASSWORD
 Environment=CONTAINER_PATCHES=/data/container-patches
 Environment=CONTAINER_PRESERVE_OWNER=/data/container-patches
 Environment=FOUNDRY_PROXY_SSL=true
@@ -16,12 +18,15 @@ Environment=FOUNDRY_ROUTE_PREFIX=foundryvtt
 Environment=FOUNDRY_PORT=30000
 Environment=FOUNDRY_PROXY_PORT=443
 Environment=FOUNDRY_PROXY_SSL=true
+Environment=FOUNDRY_UID=0
+Environment=FOUNDRY_GID=0
 Environment=TZ=America/Detroit
-Volume=foundryvtt1-data.volume:/data:Z
-# Volume=/nas/shared/foundry-assets:/data/Data/assets:ro,Z
-Volume=./container-patches:/data/container-patches:ro,Z
+Volume=foundryvtt1-data.volume:/data
+Volume=/nas/foundryvtt/data/Data:/data/Data
+Volume=/nas/shared/Temp Images/assets:/assets:ro
+Volume=./container-patches:/data/container-patches:ro
 Exec=resources/app/main.mjs --port=30000 --headless --noupdate --dataPath=/data
 
 [Service]
 Restart=on-failure
-RestartSec=5s
+RestartSec=5

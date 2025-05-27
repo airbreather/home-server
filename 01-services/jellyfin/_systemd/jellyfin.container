@@ -4,13 +4,11 @@ Description=Jellyfin media server
 [Container]
 Image=docker.io/jellyfin/jellyfin:10
 AutoUpdate=registry
+UserNS=auto
 Pod=web.pod
-Volume=jellyfin-config.volume:/config:Z
-Volume=jellyfin-cache.volume:/cache:Z
-
-# FOR NOW use something easier
-# Volume=/nas/media:/media:ro,Z
-Volume=%h/media:/media:ro,Z
+Volume=/nas/media/jellyfin:/config
+Volume=jellyfin-cache.volume:/cache
+Volume=/nas/media:/nas/media:ro
 
 [Service]
 Restart=on-failure

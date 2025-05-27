@@ -4,10 +4,18 @@ Description=Forgejo software forge
 [Container]
 Image=codeberg.org/forgejo/forgejo:10
 AutoUpdate=registry
+UserNS=auto
 Pod=web.pod
 Environment=TZ=America/Detroit
-Volume=forgejo-data.volume:/data:Z
-Volume=forgejo-var-lib-gitea.volume:/var/lib/gitea:Z
+Environment=FORGEJO__server__SSH_USER=forgejo
+Environment=FORGEJO__server__HTTP_PORT=8686
+Environment=FORGEJO__actions__ENABLED=true
+Environment=FORGEJO__actions__DEFAULT_ACTIONS_URL=https://code.forgejo.org
+Volume=forgejo-data.volume:/data
+Volume=forgejo-var-lib-gitea.volume:/var/lib/gitea
+# when ready:
+#Volume=/nas/forgejo/newdata:/data
+#Volume=/nas/forgejo/varlibgitea:/var/lib/gitea
 
 [Service]
 Restart=on-failure

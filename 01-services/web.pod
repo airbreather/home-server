@@ -4,3 +4,8 @@ Description=TLS reverse-proxy and its targets
 [Pod]
 UserNS=auto
 PublishPort=443:443
+#this is the Archipelago port range
+#PublishPort=49152-65535:49152-65535
+
+[Install]
+WantedBy=default.target

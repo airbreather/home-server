@@ -18,4 +18,4 @@ Exec=renew
 
 [Service]
 Type=oneshot
-TimeoutStartSec=120
+TimeoutStartSec=900

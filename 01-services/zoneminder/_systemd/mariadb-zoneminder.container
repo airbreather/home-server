@@ -1,0 +1,15 @@
+[Container]
+Environment=MARIADB_DATABASE=zm
+Secret=mariadb_root_password,type=env,target=MARIADB_ROOT_PASSWORD
+Environment=MARIADB_USER=zmuser
+Secret=mariadb_zmuser_password,type=env,target=MARIADB_PASSWORD
+Environment=TZ=America/Detroit
+Image=mariadb
+Pod=web.pod
+UserNS=auto
+Volume=/nas/zm/db:/var/lib/mysql
+Volume=/nas/zm/run-mysqld:/run/mysqld
+
+[Service]
+Restart=on-failure
+RestartSec=5s

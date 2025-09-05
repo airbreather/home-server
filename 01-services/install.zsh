@@ -7,7 +7,7 @@ if false; then
     podman image rm -f localhost/archipelago:latest
     podman image rm -f localhost/yarp:latest
     podman volume rm -f systemd-certbot-etc-letsencrypt
-    for secret_name in "cloudflare_credentials" "postgresql_password" "archipelago_host" "forgejo_host" "jellyfin_host" "foundryvtt1_adminpassword" "foundryvtt2_adminpassword"; do
+    for secret_name in "cloudflare_credentials" "postgresql_password" "archipelago_host" "forgejo_host" "jellyfin_host" "foundryvtt1_adminpassword" "foundryvtt2_adminpassword" "mariadb_root_password" "mariadb_zmuser_password" "zoneminder_host"; do
         podman secret rm -i $secret_name
     done
     rm -rf $HOME/.config/containers/systemd
@@ -41,6 +41,9 @@ fi
 if ! $(podman secret exists jellyfin_host); then
     (read -s 'JELLYFIN_HOST?Jellyfin host: '; echo -n $JELLYFIN_HOST | podman secret create jellyfin_host -)
 fi
+if ! $(podman secret exists zoneminder_host); then
+    (read -s 'ZONEMINDER_HOST?ZoneMinder host: '; echo -n $ZONEMINDER_HOST | podman secret create zoneminder_host -)
+fi
 if ! $(podman secret exists foundryvtt_username); then
     (read -s 'FOUNDRYVTT_USERNAME?Foundry VTT username '; echo -n $FOUNDRYVTT_USERNAME | podman secret create foundryvtt_username -)
 fi
@@ -53,12 +56,15 @@ fi
 if ! $(podman secret exists foundryvtt2_adminpassword); then
     (read -s 'FOUNDRYVTT2_ADMINPASSWORD?Foundry VTT 2 admin password: '; echo -n $FOUNDRYVTT2_ADMINPASSWORD | podman secret create foundryvtt2_adminpassword -)
 fi
+if ! $(podman secret exists mariadb_root_password); then
+    (read -s 'MARIADB_ROOT_PASSWORD?MariaDB root password: '; echo -n $MARIADB_ROOT_PASSWORD | podman secret create mariadb_root_password -)
+fi
+if ! $(podman secret exists mariadb_zmuser_password); then
+    (read -s 'MARIADB_ZMUSER_PASSWORD?MariaDB ZoneMinder user password: '; echo -n $MARIADB_ZMUSER_PASSWORD | podman secret create mariadb_zmuser_password -)
+fi
 
 mkdir -p $HOME/.config/containers/systemd
 cp $SCRIPT_DIR/web.pod $HOME/.config/containers/systemd/
-
-# handle old data. don't worry, this doesn't remap the UID/GID values in the zpool just yet.
-$SCRIPT_DIR/handle-old-data.zsh
 
 # handle each service now using its own install script. Certbot goes first so we can daemon-reload
 # and set up the /etc/letsencrypt volume before any of the other containers (especially those that
@@ -81,6 +87,7 @@ $SCRIPT_DIR/postgresql/install.zsh
 $SCRIPT_DIR/samba/install.zsh
 $SCRIPT_DIR/static-files/install.zsh
 $SCRIPT_DIR/yarp/install.zsh
+$SCRIPT_DIR/zoneminder/install.zsh
 
 systemctl --user daemon-reload
 systemctl --user start web-pod.service
